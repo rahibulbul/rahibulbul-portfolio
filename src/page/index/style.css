@@ -1,0 +1,13 @@
+.home {
+    padding: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.input-text {
+    width: 350px;
+    height: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    /* background-color: aquamarine; */
+}
