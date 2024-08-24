@@ -19,8 +19,25 @@ const Index = () => {
     e.preventDefault();
     alert("Form submitted successfully!");
   };
+  const [normalPassword, setNormalPassword] = useState("");
+
+  const handleNormalPasswordChange = (value) => {
+    setNormalPassword(value);
+  };
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(false);
+
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+    setPasswordsMatch(value === confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (value) => {
+    setConfirmPassword(value);
+    setPasswordsMatch(value === password);
+  };
 
   return (
     <div className="home">
@@ -75,19 +92,48 @@ const Index = () => {
             defaultCountry="GB"
           />
         </div>
-        <div className="input-password">
+        {/* <div className="input-password">
           <ValidatePassword
             label="Enter Password"
             errorMessage="Please enter a valid password."
             requiredMessage="Password cannot be empty."
           />
         </div>
-        <div className="input-text">
-          <PhoneNumberInput
-            label="Enter your phone number"
-            errorMessage="Please enter a valid phone number."
-            requiredMessage="Phone number cannot be empty."
-            defaultCountry="GB"
+        <div className="input-password">
+          <ValidatePassword
+            label="Confirm Password"
+            errorMessage="Please enter a valid password."
+            requiredMessage="Password cannot be empty."
+          />
+        </div> */}
+        <div className="input-password">
+          <ValidatePassword
+            label="Enter normal Password"
+            value={normalPassword}
+            setValue={handleNormalPasswordChange}
+            errorMessage="Please enter a valid password."
+            requiredMessage="Password cannot be empty."
+          />
+        </div>
+        <div className="input-password">
+          <ValidatePassword
+            label="Enter Main Password"
+            value={password}
+            setValue={handlePasswordChange}
+            errorMessage="Please enter a valid password."
+            requiredMessage="Password cannot be empty."
+            passwordsMatch={passwordsMatch && password.length > 0}
+          />
+        </div>
+        <div className="input-password">
+          <ValidatePassword
+            label="Confirm Password"
+            value={confirmPassword}
+            setValue={handleConfirmPasswordChange}
+            originalPassword={password}
+            errorMessage="Passwords do not match."
+            requiredMessage="Password cannot be empty."
+            passwordsMatch={passwordsMatch && confirmPassword.length > 0}
           />
         </div>
 
