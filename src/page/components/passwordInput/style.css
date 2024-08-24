@@ -19,7 +19,7 @@
 .validated-password label {
     position: absolute;
     left: 10px;
-    top: 20%;
+    top: 25%;
     transform: translateY(-50%);
     color: #696969;
     font-weight: 600;
@@ -49,24 +49,16 @@
 
 .validated-password .error-icon-password {
     position: absolute;
-    top: 20%;
+    top: 25%;
     transform: translateY(-50%);
     margin-left: 8px;
     font-size: 20px;
     right: -25px;
 }
 
-.validated-password .error-text {
-    color: red;
-    margin-left: 15px;
-    font-family: 12px;
-    font-weight: 600;
-    margin-top: -3px;
-}
-
 .validated-password .eye-icon-password {
     position: absolute;
-    top: 20%;
+    top: 25%;
     transform: translateY(-50%);
     right: 10px;
     cursor: pointer;
@@ -80,11 +72,8 @@
 
 .strength-label {
     margin-bottom: 5px;
-}
-
-.validated-password .error-text {
-    display: block;
-    margin-bottom: 5px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .strength-bar {
@@ -92,5 +81,34 @@
     width: 100%;
     border-radius: 5px;
     background-color: transparent;
+}
+
+.validated-password {
+    position: relative;
+    width: 100%;
+}
+
+.validated-password {
+    position: relative;
+    width: 100%;
+}
+
+.strength-bar-wrapper {
+    display: flex;
+    justify-content: space-between;
     margin-top: 5px;
+}
+
+.strength-bar-segment {
+    width: 18%;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #d3d3d3;
+    /* Light grey by default */
+    transition: background-color 0.5s ease;
+}
+
+.strength-bar-segment.active {
+    background-color: #27ae60;
+    /* Color will be overridden by inline styles */
 }

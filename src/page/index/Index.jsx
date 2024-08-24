@@ -10,10 +10,6 @@ const Index = () => {
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validateOccupation = (occupation) => occupation.length > 0;
   const validateAddress = (address) => address.length > 0;
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,20}$/;
-    return passwordRegex.test(password);
-  };
 
   // Transformation function to enforce lowercase and remove spaces
   const transformUsername = (username) =>
@@ -23,6 +19,8 @@ const Index = () => {
     e.preventDefault();
     alert("Form submitted successfully!");
   };
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
     <div className="home">
@@ -74,7 +72,7 @@ const Index = () => {
             label="Enter your phone number"
             errorMessage="Please enter a valid phone number."
             requiredMessage="Phone number cannot be empty."
-            defaultCountry="GB" // Default country as United Kingdom
+            defaultCountry="GB"
           />
         </div>
         <div className="input-password">
@@ -85,11 +83,11 @@ const Index = () => {
           />
         </div>
         <div className="input-text">
-          <ValidatedInput
-            label="Full Address"
-            validate={validateAddress}
-            errorMessage="Address cannot be empty."
-            requiredMessage="Address cannot be empty."
+          <PhoneNumberInput
+            label="Enter your phone number"
+            errorMessage="Please enter a valid phone number."
+            requiredMessage="Phone number cannot be empty."
+            defaultCountry="GB"
           />
         </div>
 

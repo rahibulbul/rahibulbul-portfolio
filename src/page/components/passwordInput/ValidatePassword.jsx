@@ -25,14 +25,16 @@ const ValidatePassword = ({
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [passwordStrength, setPasswordStrength] = useState(null); // null initially
   const [passwordStrengthLabel, setPasswordStrengthLabel] = useState(
     "Enter your password"
   );
 
   const validatePassword = (password) => {
-    if (password.length < 8) return { strength: 0, label: "Too Short" };
-    if (password.length > 20) return { strength: 0, label: "Too Big" };
+    if (password.length < 8)
+      return { strength: 1, label: "Password Too Short", color: "#e74c3c" };
+    if (password.length > 20)
+      return { strength: 0, label: "Password Too Big", color: "#e74c3c" }; // Set strength to 0 for "Too Big"
 
     const hasLower = /[a-z]/.test(password);
     const hasUpper = /[A-Z]/.test(password);
@@ -45,15 +47,19 @@ const ValidatePassword = ({
 
     switch (strength) {
       case 4:
-        return { strength: 5, label: "Strongest" };
+        return {
+          strength: 5,
+          label: "Password is Strongest",
+          color: "#2ecc71",
+        };
       case 3:
-        return { strength: 4, label: "Strong" };
+        return { strength: 4, label: "Password is Strong", color: "#27ae60" };
       case 2:
-        return { strength: 3, label: "Medium" };
+        return { strength: 3, label: "Password is Medium", color: "#e67e22" };
       case 1:
-        return { strength: 2, label: "Weak" };
+        return { strength: 2, label: "Password is Weak", color: "#f1c40f" };
       default:
-        return { strength: 1, label: "Too Weak" };
+        return { strength: 1, label: "Password is Too Weak", color: "#e74c3c" };
     }
   };
 
@@ -66,23 +72,32 @@ const ValidatePassword = ({
 
     setValue(inputValue);
 
-    const { strength, label } = validatePassword(inputValue);
-    setPasswordStrength(strength);
-    setPasswordStrengthLabel(label);
-
-    if (strength >= 3) {
-      setError("");
+    if (!inputValue) {
+      // Clear the error and reset the bar when the input is cleared
+      setPasswordStrength(null);
+      setPasswordStrengthLabel("Enter your password");
+      setError(requiredMessage || "Enter password");
     } else {
-      setError(errorMessage);
+      const { strength, label, color } = validatePassword(inputValue);
+      setPasswordStrength(strength);
+      setPasswordStrengthLabel(label);
+
+      if (strength >= 2) {
+        setError("");
+      } else {
+        setError(errorMessage);
+      }
     }
   };
 
   const handleBlur = () => {
     setTouched(true);
     if (!value) {
-      setError(requiredMessage || "Enter password");
-    } else if (passwordStrength < 3) {
+      setError(requiredMessage || "Password cannot be empty.");
+      setPasswordStrengthLabel(requiredMessage || "Password cannot be empty.");
+    } else if (passwordStrength < 2) {
       setError(errorMessage);
+      setPasswordStrengthLabel(errorMessage);
     } else {
       setError("");
     }
@@ -107,22 +122,25 @@ const ValidatePassword = ({
     fontSize: iconFontSize || undefined,
   };
 
-  const getStrengthColor = (label) => {
-    if (label === "Too Short" || label === "Too Big" || label === "Too Weak") {
-      return "#e74c3c"; // Red for too short, too big, or too weak
+  const getStrengthColor = (strength, index) => {
+    if (strength === null) return "#B2BEB5"; // Default light grey for initial state
+    if (strength === 0) return "#e74c3c"; // Red for all segments if the password is too big
+    if (strength === 1 && index === 0) return "#e74c3c"; // Red for the first bar segment if strength is 1
+    if (strength > index) {
+      switch (strength) {
+        case 2:
+          return "#f1c40f"; // Weak
+        case 3:
+          return "#e67e22"; // Medium
+        case 4:
+          return "#2ecc71"; // Strong
+        case 5:
+          return "#27ae60"; // Strongest
+        default:
+          return "#B2BEB5"; // Default light grey
+      }
     }
-    switch (label) {
-      case "Weak":
-        return "#f1c40f"; // Yellow for weak
-      case "Medium":
-        return "#e67e22"; // Orange for medium
-      case "Strong":
-        return "#27ae60"; // Green for strong
-      case "Strongest":
-        return "#2ecc71"; // Dark Green for strongest
-      default:
-        return "#696969"; // Light grey for initial state
-    }
+    return "#B2BEB5"; // Default light grey for all others
   };
 
   return (
@@ -143,8 +161,37 @@ const ValidatePassword = ({
         onClick={toggleShowPassword}
         style={iconStyle}
       >
-        {showPassword ? <FaEyeSlash /> : <FaEye />}
+        {showPassword ? <FaEye /> : <FaEyeSlash />}
       </span>
+      <div
+        className="password-strength-meter"
+        style={{
+          borderRadius: "5px",
+        }}
+      >
+        <div
+          className="strength-label"
+          style={{ color: error ? "#e74c3c" : "#696969" }} // Apply red color if there's an error
+        >
+          {passwordStrengthLabel}
+        </div>
+        <div className="strength-bar-wrapper">
+          {[...Array(5)].map((_, index) => (
+            <div
+              key={index}
+              className={`strength-bar-segment ${
+                passwordStrength !== null && passwordStrength > index
+                  ? "active"
+                  : ""
+              }`}
+              style={{
+                backgroundColor: getStrengthColor(passwordStrength, index),
+                transition: "background-color 0.5s ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
       {touched && (
         <span className="error-icon-password" style={iconStyle}>
           {error ? (
@@ -154,36 +201,6 @@ const ValidatePassword = ({
           )}
         </span>
       )}
-      <p
-        className="error-text"
-        style={{ color: error ? "#e74c3c" : "transparent" }}
-      >
-        {error || "Enter password"}
-      </p>
-
-      <div
-        className="password-strength-meter"
-        style={{
-          borderRadius: "5px",
-        }}
-      >
-        <div
-          className="strength-label"
-          style={{ color: getStrengthColor(passwordStrengthLabel) }}
-        >
-          {passwordStrengthLabel}
-        </div>
-        <div
-          className="strength-bar"
-          style={{
-            backgroundColor: getStrengthColor(passwordStrengthLabel),
-            height: "10px",
-            width: "100%",
-            borderRadius: "5px",
-            marginTop: "5px",
-          }}
-        />
-      </div>
     </div>
   );
 };
