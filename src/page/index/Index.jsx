@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ValidatedInput from "../components/textInput/ValidatedInput";
 import PhoneNumberInput from "../components/phoneInput/PhoneNumberInput";
+import ValidatePassword from "../components/passwordInput/ValidatePassword";
 import "./style.css";
 
 const Index = () => {
@@ -9,6 +10,10 @@ const Index = () => {
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validateOccupation = (occupation) => occupation.length > 0;
   const validateAddress = (address) => address.length > 0;
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,20}$/;
+    return passwordRegex.test(password);
+  };
 
   // Transformation function to enforce lowercase and remove spaces
   const transformUsername = (username) =>
@@ -65,12 +70,26 @@ const Index = () => {
           />
         </div>
         <div className="input-text">
-          {" "}
           <PhoneNumberInput
             label="Enter your phone number"
             errorMessage="Please enter a valid phone number."
             requiredMessage="Phone number cannot be empty."
             defaultCountry="GB" // Default country as United Kingdom
+          />
+        </div>
+        <div className="input-password">
+          <ValidatePassword
+            label="Enter Password"
+            errorMessage="Please enter a valid password."
+            requiredMessage="Password cannot be empty."
+          />
+        </div>
+        <div className="input-text">
+          <ValidatedInput
+            label="Full Address"
+            validate={validateAddress}
+            errorMessage="Address cannot be empty."
+            requiredMessage="Address cannot be empty."
           />
         </div>
 

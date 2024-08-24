@@ -6,8 +6,12 @@
 
 .input-text {
     width: 350px;
-    height: 50px;
     margin-bottom: 20px;
     margin-top: 20px;
-    /* background-color: aquamarine; */
+}
+
+.input-password {
+    width: 350px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }

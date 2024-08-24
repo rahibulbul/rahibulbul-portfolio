@@ -21,13 +21,13 @@
 }
 
 .phone-input-country-selector-button {
-    height: 100%;
+    height: 50px;
     width: 100%;
     display: flex;
     align-items: center;
     background: none;
     background-color: white;
-    border: solid 2px #696969;
+    border: solid 1px #696969;
     border-radius: 10px;
     outline: none;
     transition: 0.6s;
@@ -47,7 +47,7 @@
 
 .phone-input-field {
     width: 100%;
-    height: 100%;
+    height: 50px;
     border: solid 2px #B2BEB5;
     border-radius: 10px;
     padding: 0px 20px;
@@ -110,3 +110,28 @@
     font-size: 20px;
     right: -30px;
 }
+
+.phone-country-code-flag-name {
+    width: 100%;
+    padding: 0.25rem 0px;
+    font-weight: 600;
+}
+
+.phone-country-code-flag-name:hover {
+    width: 100%;
+    padding: 0.25rem 0px;
+    background-color: #90d6e9;
+}
+
+
+/* .phone-country-search {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.phone-country-search:focus {
+    border-bottom: 2px solid black;
+} */

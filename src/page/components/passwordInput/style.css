@@ -1,25 +1,25 @@
-.validated-input {
+.validated-password {
     width: 100%;
-    height: 50px;
+    height: 100%;
     position: relative;
 }
 
-.validated-input input {
-    height: 100%;
+.validated-password input {
+    height: 50px;
     width: 100%;
     border: solid 2px #B2BEB5;
     border-radius: 10px;
-    padding: 0px 20px;
+    padding: 0px 30px 0px 20px;
     font-size: 18px;
     font-weight: 600;
     transition: all 0.5s ease-in-out;
     outline: none;
 }
 
-.validated-input label {
+.validated-password label {
     position: absolute;
     left: 10px;
-    top: 50%;
+    top: 20%;
     transform: translateY(-50%);
     color: #696969;
     font-weight: 600;
@@ -30,36 +30,67 @@
     z-index: 1;
 }
 
-.validated-input input:focus,
-.validated-input input:valid {
+.validated-password input:focus,
+.validated-password input:valid {
     border: solid 2px #36454F;
 }
 
-.validated-input input:focus+label,
-.validated-input input:valid+label {
+.validated-password input:focus+label,
+.validated-password input:valid+label {
     transform: translateY(-150%);
     background-color: #fff;
     color: black;
     font-weight: 600;
 }
 
-.validated-input input:focus {
+.validated-password input:focus {
     box-shadow: 0px 12px 28px 0px rgba(0, 0, 0, 0.2), 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(255, 255, 255, 0.05) inset;
 }
 
-
-.validated-input .error-icon {
+.validated-password .error-icon-password {
     position: absolute;
-    top: 50%;
+    top: 20%;
     transform: translateY(-50%);
     margin-left: 8px;
     font-size: 20px;
+    right: -25px;
 }
 
-.validated-input .error-text {
+.validated-password .error-text {
     color: red;
     margin-left: 15px;
     font-family: 12px;
     font-weight: 600;
     margin-top: -3px;
+}
+
+.validated-password .eye-icon-password {
+    position: absolute;
+    top: 20%;
+    transform: translateY(-50%);
+    right: 10px;
+    cursor: pointer;
+}
+
+.password-strength-meter {
+    height: 100%;
+    width: 100%;
+    padding: 0px 10px;
+}
+
+.strength-label {
+    margin-bottom: 5px;
+}
+
+.validated-password .error-text {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.strength-bar {
+    height: 10px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: transparent;
+    margin-top: 5px;
 }
