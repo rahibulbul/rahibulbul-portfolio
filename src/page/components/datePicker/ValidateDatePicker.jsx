@@ -1,157 +1,3 @@
-// import React, { useState } from "react";
-// import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
-
-// const ValidateDatePicker = ({
-//   label,
-//   requiredMessage = "Date cannot be empty.",
-//   errorMessage = "Please insert a correct date.",
-//   fontSize,
-//   fontWeight,
-//   className,
-//   width = "100%",
-//   height = "50px",
-//   marginTop = "30px",
-//   fontFamily,
-//   BoxShadow,
-//   iconFontSize,
-// }) => {
-//   const [value, setValue] = useState("");
-//   const [touched, setTouched] = useState(false);
-//   const [error, setError] = useState("");
-//   const [isFocused, setIsFocused] = useState(false);
-//   const [showRequiredError, setShowRequiredError] = useState(false);
-
-//   const validateDate = (dateString) => {
-//     const date = new Date(dateString);
-//     const today = new Date();
-//     return date <= today;
-//   };
-
-//   const handleChange = (e) => {
-//     let inputValue = e.target.value;
-//     setValue(inputValue);
-
-//     if (validateDate(inputValue)) {
-//       setError("");
-//       setShowRequiredError(false);
-//     } else {
-//       setError(errorMessage);
-//     }
-//   };
-
-//   const handleBlur = () => {
-//     setTouched(true);
-//     setIsFocused(false);
-//     if (!value) {
-//       setError(requiredMessage);
-//       setShowRequiredError(true);
-//     } else if (!validateDate(value)) {
-//       setError(errorMessage);
-//       setShowRequiredError(false);
-//     } else {
-//       setError("");
-//       setShowRequiredError(false);
-//     }
-//   };
-
-//   const handleFocus = () => {
-//     setIsFocused(true);
-//     setTouched(true);
-//     setShowRequiredError(false);
-//   };
-
-//   const inputStyle = {
-//     height: height,
-//     width: width,
-//     border: "solid 2px #B2BEB5",
-//     borderRadius: "10px",
-//     padding: "0px 20px",
-//     fontSize: fontSize || "18px",
-//     fontWeight: fontWeight || "600",
-//     transition: "all 0.5s ease-in-out",
-//     outline: "none",
-//     fontFamily: fontFamily || undefined,
-//     borderColor: error ? "#e74c3c" : isFocused || value ? "#36454F" : "#B2BEB5",
-//     boxShadow: isFocused
-//       ? "0px 12px 28px 0px rgba(0, 0, 0, 0.2), 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(255, 255, 255, 0.05) inset"
-//       : undefined,
-//   };
-
-//   const labelStyle = {
-//     position: "absolute",
-//     left: "10px",
-//     top: "50%",
-//     pointerEvents: "none",
-//     transition: "transform 0.5s, color 0.5s",
-//     padding: "0px 10px",
-//     zIndex: 1,
-//     transform:
-//       isFocused || (touched && value)
-//         ? "translateY(-150%)"
-//         : "translateY(-50%)",
-//     backgroundColor: isFocused || (touched && value) ? "#fff" : "#fff",
-//     color: error
-//       ? "#e74c3c"
-//       : isFocused || (touched && value)
-//       ? "black"
-//       : "#696969",
-//     fontWeight: "600",
-//   };
-
-//   const errorTextStyle = {
-//     color: error ? "red" : "transparent",
-//     marginLeft: "15px",
-//     fontSize: "14px",
-//     fontWeight: "600",
-//     marginTop: "-1px",
-//     transition: "color 0.5s ease-in-out",
-//   };
-
-//   const iconStyle = {
-//     position: "absolute",
-//     top: "50%",
-//     transform: "translateY(-50%)",
-//     marginLeft: "8px",
-//     fontSize: iconFontSize || "20px",
-//   };
-
-//   return (
-//     <div
-//       className={`validated-input ${className || ""}`}
-//       style={{
-//         width: "100%",
-//         height: height,
-//         marginTop: marginTop,
-//         position: "relative",
-//       }}
-//     >
-//       <input
-//         style={inputStyle}
-//         type="date"
-//         value={value}
-//         onChange={handleChange}
-//         onBlur={handleBlur}
-//         onFocus={handleFocus}
-//         className={error ? "error" : ""}
-//         required
-//       />
-//       <label style={labelStyle}>{label}</label>
-//       {touched && (
-//         <span className="error-icon" style={iconStyle}>
-//           {error ? (
-//             <FaExclamationCircle style={{ color: "#e74c3c" }} />
-//           ) : (
-//             value && <FaCheckCircle style={{ color: "#2ecc71" }} />
-//           )}
-//         </span>
-//       )}
-//       <p style={errorTextStyle}>{error}</p>
-//     </div>
-//   );
-// };
-
-// export default ValidateDatePicker;
-
 import React, { useState, useEffect, useRef } from "react";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
@@ -164,20 +10,11 @@ const formatDate = (date) => {
 
 const DatePicker = ({
   selectedDate,
-  onChange = (date) => {
-    console.log("Selected Date:", date);
-  }, // Default implementation
+  onChange = () => {}, // Default to a no-op function if not provided
   label,
-  errorMessage = "Date cannot be in the future",
   requiredMessage = "Date is required",
-  iconFontSize = "20px",
-  height = "50px",
-  width = "100%",
-  fontSize = "18px",
-  fontWeight = "600",
-  marginTop = "30px",
-  fontFamily,
-  BoxShadow,
+  errorMessage = "Invalid date",
+  futureDateMessage = "Date cannot be in the future",
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -186,7 +23,7 @@ const DatePicker = ({
   );
   const [error, setError] = useState("");
   const [touched, setTouched] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
   const calendarRef = useRef(null);
 
   useEffect(() => {
@@ -208,18 +45,39 @@ const DatePicker = ({
       day
     );
 
-    if (newDate > new Date()) {
-      setError(errorMessage);
-    } else {
-      setInputDate(formatDate(newDate));
-      setShowCalendar(false);
-      setError("");
-      onChange(newDate); // Call the onChange handler
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to the start of today to avoid time-related issues
+
+    if (newDate > today) {
+      setError(futureDateMessage);
+      return;
     }
+
+    setInputDate(formatDate(newDate));
+    setShowCalendar(false);
+    setError(""); // Clear error on valid date selection
+    setFocused(false); // Remove focus state on valid selection
+    onChange(newDate);
   };
 
   const handleInputClick = () => {
     setShowCalendar(!showCalendar);
+  };
+
+  const handleBlur = () => {
+    setTouched(true);
+    if (!inputDate) {
+      setError(requiredMessage);
+    } else {
+      setError(""); // Clear error if input is valid
+    }
+    setFocused(false); // Remove focus state on blur
+  };
+
+  const handleFocus = () => {
+    setTouched(true);
+    setError(""); // Clear error on focus
+    setFocused(true); // Set focus state
   };
 
   const handleYearChange = (e) => {
@@ -230,22 +88,6 @@ const DatePicker = ({
   const handleMonthChange = (e) => {
     const newMonth = parseInt(e.target.value, 10);
     setCurrentDate(new Date(currentDate.getFullYear(), newMonth, 1));
-  };
-
-  const handleBlur = () => {
-    setTouched(true);
-    setIsFocused(false);
-    if (!inputDate) {
-      setError(requiredMessage);
-    } else {
-      setError("");
-    }
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-    setTouched(true);
-    setError("");
   };
 
   const renderDays = () => {
@@ -266,6 +108,10 @@ const DatePicker = ({
         <div
           style={{
             visibility: "hidden",
+            padding: "10px",
+            textAlign: "center",
+            borderRadius: "50%",
+            transition: "background 0.3s",
           }}
           key={`empty-${i}`}
         />
@@ -281,9 +127,8 @@ const DatePicker = ({
             cursor: "pointer",
             borderRadius: "50%",
             transition: "background 0.3s",
-            backgroundColor:
-              formatDate(currentDate) === inputDate ? "#25a8e4" : "",
-            color: formatDate(currentDate) === inputDate ? "white" : "black",
+            background: i === currentDate.getDate() ? "#25a8e4" : "transparent",
+            color: i === currentDate.getDate() ? "white" : "black",
           }}
           key={i}
           onClick={() => handleDateClick(i)}
@@ -300,73 +145,28 @@ const DatePicker = ({
     setInputDate("");
     setCurrentDate(new Date());
     setError(requiredMessage);
-    onChange(null); // Call the onChange handler with null
-  };
-
-  const inputStyle = {
-    height: height,
-    width: width,
-    border: "solid 2px #B2BEB5",
-    borderRadius: "10px",
-    padding: "0px 20px",
-    fontSize: fontSize,
-    fontWeight: fontWeight,
-    transition: "all 0.5s ease-in-out",
-    outline: "none",
-    fontFamily: fontFamily || undefined,
-    boxShadow: BoxShadow || undefined,
-    boxSizing: "border-box", // Ensure the border size doesn't affect the layout
-    borderColor: error
-      ? "#e74c3c"
-      : isFocused || inputDate
-      ? "#36454F"
-      : "#B2BEB5",
-    boxShadow: isFocused
-      ? "0px 12px 28px 0px rgba(0, 0, 0, 0.2), 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(255, 255, 255, 0.05) inset"
-      : undefined,
-  };
-
-  const labelStyle = {
-    position: "absolute",
-    left: "10px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    transition: "transform 0.3s ease-in-out, color 0.3s ease-in-out",
-    pointerEvents: "none",
-    zIndex: 1,
-    backgroundColor:
-      isFocused || (touched && inputDate) ? "#fff" : "transparent",
-    color: error
-      ? "#e74c3c"
-      : isFocused || (touched && inputDate)
-      ? "black"
-      : "#696969",
-    fontWeight: "600",
-  };
-
-  const errorTextStyle = {
-    color: error ? "red" : "transparent",
-    marginLeft: "15px",
-    fontSize: "14px",
-    fontWeight: "600",
-    marginTop: "5px",
-    transition: "color 0.3s ease-in-out",
-  };
-
-  const iconStyle = {
-    position: "absolute",
-    top: "50%",
-    right: "10px",
-    transform: "translateY(-50%)",
-    fontSize: iconFontSize,
-    transition: "color 0.3s ease-in-out",
+    onChange(null);
   };
 
   return (
-    <div ref={calendarRef} style={{ position: "relative", marginTop }}>
-      <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "50px",
+        marginTop: "30px",
+      }}
+      ref={calendarRef}
+    >
+      <div
+        style={{
+          position: "relative",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <input
-          style={inputStyle}
           type="text"
           value={inputDate}
           onClick={handleInputClick}
@@ -375,13 +175,60 @@ const DatePicker = ({
           readOnly
           placeholder=" "
           required
-          className={error ? "error" : ""}
+          style={{
+            width: "100%",
+            height: "100%",
+            border: `solid 2px ${
+              error
+                ? "#e74c3c"
+                : inputDate
+                ? "black"
+                : focused
+                ? "black"
+                : "#B2BEB5"
+            }`,
+            borderRadius: "10px",
+            fontSize: "18px",
+            fontWeight: 600,
+            outline: "none",
+            padding: "0px 35px 0px 30px",
+            transition: "border-color 0.3s, box-shadow 0.3s",
+            boxShadow:
+              focused && !inputDate ? "0 0 5px rgba(0, 0, 0, 0.2)" : "none",
+          }}
         />
-        <label style={labelStyle} className={error ? "error" : ""}>
+        <label
+          style={{
+            position: "absolute",
+            left: "10px",
+            padding: "0px 10px",
+            fontSize: "16px",
+            zIndex: 1,
+            fontWeight: error || inputDate || focused ? 600 : 400, // Bold when error, input is valid, or focused
+            color: error ? "#e74c3c" : inputDate || focused ? "black" : "black", // Black when focused or valid
+            // margin: "15px 20px",
+            transition: "transform 0.5s, color 0.3s",
+            transform:
+              inputDate || showCalendar || focused
+                ? "translate(0px, -28px)"
+                : "translate(0px, -4px)",
+            backgroundColor: "white",
+            pointerEvents: "none",
+          }}
+        >
           {label}
         </label>
         {touched && (
-          <span style={iconStyle}>
+          <span
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "-25px",
+              transform: "translateY(-50%)",
+              fontSize: "20px",
+              transition: "color 0.3s ease-in-out",
+            }}
+          >
             {error ? (
               <FaExclamationCircle style={{ color: "#e74c3c" }} />
             ) : (
@@ -389,8 +236,35 @@ const DatePicker = ({
             )}
           </span>
         )}
-        <p style={errorTextStyle}>{error}</p>
       </div>
+      <p
+        style={{
+          color: error ? "red" : "transparent",
+          marginLeft: "15px",
+          fontSize: "14px",
+          fontWeight: "600",
+          marginTop: "-1px",
+          transition: "color 0.5s ease-in-out",
+          // Hide the element completely when there's no error
+        }}
+      >
+        {error}
+      </p>
+      {/* <p
+        style={{
+          color: "#e74c3c",
+          marginLeft: "15px",
+          fontSize: "14px",
+          fontWeight: 600,
+          marginTop: "5px", // Consistent margin above the error message
+          marginBottom: "0px", // No margin below to avoid gaps
+          padding: "0px", // Remove any padding to control spacing
+          transition: "color 0.3s ease-in-out, margin-top 0.3s ease-in-out",
+          display: error ? "block" : "none", // Show error only when present
+        }}
+      >
+        {error}
+      </p> */}
       {showCalendar && (
         <div
           style={{
@@ -419,10 +293,11 @@ const DatePicker = ({
               onChange={handleMonthChange}
               style={{
                 border: "1px solid #ccc",
-                padding: "10px 30px",
+                padding: "5px",
                 fontSize: "14px",
                 background: "none",
                 borderRadius: "10px",
+                padding: "10px 30px",
               }}
             >
               {Array.from({ length: 12 }, (v, k) => (
@@ -436,10 +311,11 @@ const DatePicker = ({
               onChange={handleYearChange}
               style={{
                 border: "1px solid #ccc",
-                padding: "10px 30px",
+                padding: "5px",
                 fontSize: "14px",
                 background: "none",
                 borderRadius: "10px",
+                padding: "10px 30px",
               }}
             >
               {Array.from({ length: 100 }, (v, k) => (
@@ -483,15 +359,24 @@ const DatePicker = ({
               onClick={handleClear}
               style={{
                 background: "none",
-                border: "solid 1px #f44336",
+                border: "none",
                 color: "#f44336",
                 fontSize: "14px",
                 cursor: "pointer",
                 letterSpacing: "1px",
                 padding: "5px",
-                fontWeight: "800",
+                fontWeight: 800,
+                border: "solid 1px #f44336",
                 borderRadius: "20px",
                 transition: "0.5s",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = "#d93d3d";
+                e.target.style.color = "white";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = "transparent";
+                e.target.style.color = "#f44336";
               }}
             >
               Clear

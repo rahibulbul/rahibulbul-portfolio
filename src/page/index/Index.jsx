@@ -65,6 +65,13 @@ const Index = () => {
           />
         </div>
         <div className="input-text">
+          <ValidateDatePicker
+            label="Select your birthdate"
+            requiredMessage="Birthdate cannot be empty."
+            errorMessage="Please insert a correct date."
+          />
+        </div>
+        <div className="input-text">
           <ValidatedInput
             label="Username"
             // validate={validateUsername}
@@ -158,13 +165,7 @@ const Index = () => {
             errorMessage="Username must be 3-15 characters long."
           />
         </div>
-        <div className="input-text">
-          <ValidateDatePicker
-            label="Select your birthdate"
-            requiredMessage="Birthdate cannot be empty."
-            errorMessage="Please insert a correct date."
-          />
-        </div>
+
         <div className="input-button">
           <ValidateButton text="Log in" />
         </div>
