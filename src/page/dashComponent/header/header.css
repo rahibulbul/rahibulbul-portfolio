@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: "Poppins" sans-serif;
+}
+
+header {
+    position: fixed !important;
+    background-color: white;
+    height: 60px;
+    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center !important;
+    box-shadow: 0px 20px 50px -10px rgba(0, 0, 0, 0.2);
+}
+
+.header-left {
+    display: flex !important;
+    align-items: center;
+    padding-left: 50px;
+    width: 270px;
+    height: 100%;
+
+    .header-icon {
+        margin-right: 20px;
+        display: flex !important;
+        align-items: center;
+        color: #5072A7;
+        transition: all 0.5s;
+        cursor: pointer;
+
+        &:hover {
+            color: #13274F;
+        }
+    }
+
+    .header-title {
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #5072A7;
+        transition: all 0.5s;
+        cursor: pointer;
+
+        &:hover {
+            color: #13274F;
+        }
+    }
+}
+
+.header-right {
+    position: relative !important;
+    margin-right: 50px;
+}
+
+.notification-button {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin-right: 50px;
+    width: 35px;
+    height: 35px;
+    color: #5072A7;
+    border: solid 2px #5072A7;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.5s;
+    position: relative !important;
+
+    &:hover {
+        color: #13274F;
+    }
+}
+
+.notification-panel {
+    display: block;
+    position: absolute;
+    top: 120%;
+    right: 50%;
+    background-color: white;
+    width: 350px;
+    height: 400px;
+    min-height: 200px;
+    max-height: 450px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.25), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
+    transition: 0.5s;
+    overflow-y: auto;
+
+    .panel-title {
+        padding: 10px 20px;
+        border-bottom: solid 1px #696969;
+        width: 350px;
+        background-color: white;
+    }
+
+    .panel-body {
+        display: flex;
+        flex-direction: column;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+}
+
+.notification-panel.show {
+    display: block;
+}

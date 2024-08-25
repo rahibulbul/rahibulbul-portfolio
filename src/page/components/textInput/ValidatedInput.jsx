@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
+const defaultValidations = {
+  username: (username) => /^[a-z0-9_]{3,15}$/.test(username),
+  fullname: (name) => /^[A-Za-z\s]{3,}$/.test(name),
+  email: (email) => /\S+@\S+\.\S+/.test(email),
+};
+
+const defaultTransformations = {
+  username: (username) => username.toLowerCase().replace(/\s/g, ""),
+};
+
 const ValidatedInput = ({
   label,
   validate,
-  errorMessage,
-  requiredMessage = "Please type something", // Default required message
+  errorMessage = "There is a error",
+  requiredMessage = "Item cannot be empty",
   transform,
   fontSize,
   fontWeight,
@@ -20,19 +30,43 @@ const ValidatedInput = ({
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState("");
-  const [isFocused, setIsFocused] = useState(false); // Track focus state
-  const [showRequiredError, setShowRequiredError] = useState(false); // Control visibility of required message
+  const [isFocused, setIsFocused] = useState(false);
+  const [showRequiredError, setShowRequiredError] = useState(false);
+
+  const determineFieldType = () => {
+    const labelLower = label.toLowerCase();
+    if (labelLower.includes("username") || labelLower.includes("user name")) {
+      return "username";
+    } else if (
+      labelLower.includes("name") ||
+      labelLower.includes("fullname") ||
+      labelLower.includes("full name") ||
+      labelLower.includes("last name") ||
+      labelLower.includes("first name")
+    ) {
+      return "fullname";
+    } else if (labelLower.includes("email")) {
+      return "email";
+    } else {
+      return null;
+    }
+  };
+
+  const fieldType = determineFieldType();
+
+  const appliedValidate =
+    validate || (fieldType ? defaultValidations[fieldType] : () => true);
+  const appliedTransform =
+    transform ||
+    (fieldType === "username" ? defaultTransformations.username : (v) => v);
 
   const handleChange = (e) => {
     let inputValue = e.target.value;
 
-    if (transform) {
-      inputValue = transform(inputValue);
-    }
-
+    inputValue = appliedTransform(inputValue);
     setValue(inputValue);
 
-    if (validate(inputValue)) {
+    if (appliedValidate(inputValue)) {
       setError("");
       setShowRequiredError(false);
     } else {
@@ -42,11 +76,11 @@ const ValidatedInput = ({
 
   const handleBlur = () => {
     setTouched(true);
-    setIsFocused(false); // Handle blur event
+    setIsFocused(false);
     if (!value) {
       setError(requiredMessage);
-      setShowRequiredError(true); // Show the "Please type something" message
-    } else if (!validate(value)) {
+      setShowRequiredError(true);
+    } else if (!appliedValidate(value)) {
       setError(errorMessage);
       setShowRequiredError(false);
     } else {
@@ -56,7 +90,7 @@ const ValidatedInput = ({
   };
 
   const handleFocus = () => {
-    setIsFocused(true); // Handle focus event
+    setIsFocused(true);
     setTouched(true);
     setShowRequiredError(false);
   };
@@ -74,10 +108,6 @@ const ValidatedInput = ({
     fontFamily: fontFamily || undefined,
     boxShadow: BoxShadow || undefined,
     borderColor: error ? "#e74c3c" : isFocused || value ? "#36454F" : "#B2BEB5",
-    // border:
-    //   isFocused || (touched && !error && value)
-    //     ? "solid 2px #36454F"
-    //     : "solid 2px #B2BEB5",
     boxShadow: isFocused
       ? "0px 12px 28px 0px rgba(0, 0, 0, 0.2), 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(255, 255, 255, 0.05) inset"
       : undefined,
@@ -87,12 +117,12 @@ const ValidatedInput = ({
     position: "absolute",
     left: "10px",
     top: "50%",
-    transform: "translateY(-50%)",
-    color: "#696969",
-    fontWeight: "600",
+    // transform: "translateY(-50%)",
+    // color: error ? "#e74c3c" : "#696969",
+    // fontWeight: "600",
     pointerEvents: "none",
     transition: "transform 0.5s, color 0.5s",
-    backgroundColor: "transparent",
+    // backgroundColor: "transparent",
     padding: "0px 10px",
     zIndex: 1,
     transform:
@@ -100,17 +130,21 @@ const ValidatedInput = ({
         ? "translateY(-150%)"
         : "translateY(-50%)",
     backgroundColor: isFocused || (touched && value) ? "#fff" : "transparent",
-    color: isFocused || (touched && value) ? "black" : "#696969",
+    color: error
+      ? "#e74c3c"
+      : isFocused || (touched && value)
+      ? "black"
+      : "#696969",
     fontWeight: "600",
   };
 
   const errorTextStyle = {
-    color: showRequiredError ? "red" : "transparent", // Set color based on visibility state
+    color: error ? "red" : "transparent",
     marginLeft: "15px",
     fontSize: "14px",
     fontWeight: "600",
     marginTop: "-1px",
-    transition: "color 0.5s ease-in-out", // Smooth transition when error appears/disappears
+    transition: "color 0.5s ease-in-out",
   };
 
   const iconStyle = {

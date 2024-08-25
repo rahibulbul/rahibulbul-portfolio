@@ -10,6 +10,7 @@ const ValidatePhoneInput = ({
   defaultCountry,
   width = "100%",
   height = "50px",
+  marginTop = "30px",
 }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({});
@@ -113,6 +114,7 @@ const ValidatePhoneInput = ({
     height: "100%",
     position: "relative",
     marginBottom: "1rem",
+    marginTop: marginTop,
   };
 
   const wrapperStyle = {

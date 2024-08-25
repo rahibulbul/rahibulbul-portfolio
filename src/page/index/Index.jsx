@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import ValidatedInput from "../components/textInput/ValidatedInput";
 import ValidatePhoneInput from "../components/phoneInput/ValidatePhoneInput";
 import ValidatePassword from "../components/passwordInput/ValidatePassword";
+import ValidateButton from "../components/buttonInput/ValidateButton";
+import ValidateSelect from "../components/selectInput/ValidateSelect";
+import ValidateDatePicker from "../components/datePicker/ValidateDatePicker";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 const Index = () => {
-  const validateFullName = (name) => /^[A-Za-z\s]{2,}$/.test(name);
-  const validateUsername = (username) => /^[a-z0-9_]{3,15}$/.test(username);
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-  const validateOccupation = (occupation) => occupation.length > 0;
-  const validateAddress = (address) => address.length > 0;
+  // const validateFullName = (name) => /^[A-Za-z\s]{2,}$/.test(name);
+  // const validateUsername = (username) => /^[a-z0-9_]{3,15}$/.test(username);
+  // const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+  // const validateOccupation = (occupation) => occupation.length > 0;
+  // const validateAddress = (address) => address.length > 0;
 
-  // Transformation function to enforce lowercase and remove spaces
-  const transformUsername = (username) =>
-    username.toLowerCase().replace(/\s/g, "");
+  // // Transformation function to enforce lowercase and remove spaces
+  // const transformUsername = (username) =>
+  //   username.toLowerCase().replace(/\s/g, "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,32 +42,41 @@ const Index = () => {
     setConfirmPassword(value);
     setPasswordsMatch(value === password);
   };
-
+  const titleOptions = [
+    { value: "", label: "Select Title" },
+    { value: "Mr", label: "Mr" },
+    { value: "Ms", label: "Ms" },
+    { value: "Mrs", label: "Mrs" },
+    { value: "Miss", label: "Miss" },
+  ];
   return (
     <div className="home">
       <h1>Sign Up</h1>
+      <div className="go-dash">
+        <Link to="/dashboard">Go to Dashboard</Link>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="input-text">
           <ValidatedInput
             label="Enter your full name"
-            validate={validateFullName}
-            errorMessage="Full name must be at least 2 characters and contain only letters and spaces."
+            // validate={validateFullName}
+            errorMessage="Full name must be at least 3 characters and contain only letters and spaces."
             requiredMessage="Full name cannot be empty."
           />
         </div>
         <div className="input-text">
           <ValidatedInput
             label="Username"
-            validate={validateUsername}
-            errorMessage="Username must be 3-15 characters long, contain only lowercase letters, numbers, and underscores."
+            // validate={validateUsername}
+            errorMessage="Username must be 3-15 characters long."
             requiredMessage="Username cannot be empty."
-            transform={transformUsername} // Apply transformation
+            // transform={transformUsername}
           />
         </div>
         <div className="input-text">
           <ValidatedInput
             label="Email"
-            validate={validateEmail}
+            // validate={validateEmail}
             errorMessage="Please enter a valid email address."
             requiredMessage="Email cannot be empty."
           />
@@ -71,7 +84,7 @@ const Index = () => {
         <div className="input-text">
           <ValidatedInput
             label="Occupation"
-            validate={validateOccupation}
+            // validate={validateOccupation}
             errorMessage="Occupation cannot be empty."
             requiredMessage="Occupation cannot be empty."
           />
@@ -79,9 +92,17 @@ const Index = () => {
         <div className="input-text">
           <ValidatedInput
             label="Full Address"
-            validate={validateAddress}
+            // validate={validateAddress}
             errorMessage="Address cannot be empty."
             requiredMessage="Address cannot be empty."
+          />
+        </div>
+        <div className="input-text">
+          <ValidateSelect
+            options={titleOptions}
+            label="Select Title"
+            errorMessage="Title cannot be empty."
+            requiredMessage="Please select an option"
           />
         </div>
         <div className="input-text">
@@ -92,20 +113,6 @@ const Index = () => {
             defaultCountry="GB"
           />
         </div>
-        {/* <div className="input-password">
-          <ValidatePassword
-            label="Enter Password"
-            errorMessage="Please enter a valid password."
-            requiredMessage="Password cannot be empty."
-          />
-        </div>
-        <div className="input-password">
-          <ValidatePassword
-            label="Confirm Password"
-            errorMessage="Please enter a valid password."
-            requiredMessage="Password cannot be empty."
-          />
-        </div> */}
         <div className="input-password">
           <ValidatePassword
             label="Enter normal Password"
@@ -136,19 +143,31 @@ const Index = () => {
             passwordsMatch={passwordsMatch && confirmPassword.length > 0}
           />
         </div>
-
-        {/* <button
-          type="submit"
-          style={{
-            padding: "0.5rem 1rem",
-            borderRadius: "4px",
-            border: "none",
-            backgroundColor: "#007BFF",
-            color: "#fff",
-          }}
-        >
-          Sign Up
-        </button> */}
+        <div className="input-text">
+          <ValidatedInput
+            label="Enter your email"
+            errorMessage="Please enter a valid email address."
+          />
+        </div>
+        <div className="input-text">
+          <ValidatedInput label="Hudai Test" />
+        </div>
+        <div className="input-text">
+          <ValidatedInput
+            label="Enter your username"
+            errorMessage="Username must be 3-15 characters long."
+          />
+        </div>
+        <div className="input-text">
+          <ValidateDatePicker
+            label="Select your birthdate"
+            requiredMessage="Birthdate cannot be empty."
+            errorMessage="Please insert a correct date."
+          />
+        </div>
+        <div className="input-button">
+          <ValidateButton text="Log in" />
+        </div>
       </form>
     </div>
   );

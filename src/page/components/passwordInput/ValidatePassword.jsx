@@ -134,13 +134,15 @@ const ValidatePassword = ({
     height: height,
     width: "100%",
     fontFamily: fontFamily || undefined,
-    boxShadow: BoxShadow || undefined,
     border: "solid 2px",
     borderColor: error ? "#e74c3c" : isFocused || value ? "#36454F" : "#B2BEB5",
     borderRadius: "10px",
     padding: "0px 30px 0px 20px",
     outline: "none",
     transition: "all 0.5s ease-in-out",
+    boxShadow: isFocused
+      ? "0px 12px 28px 0px rgba(0, 0, 0, 0.2), 0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(255, 255, 255, 0.05) inset"
+      : undefined,
   };
 
   const labelStyle = {
