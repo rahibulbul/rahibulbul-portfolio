@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ValidatedInput from "../components/textInput/ValidatedInput";
-import PhoneNumberInput from "../components/phoneInput/PhoneNumberInput";
+import ValidatePhoneInput from "../components/phoneInput/ValidatePhoneInput";
 import ValidatePassword from "../components/passwordInput/ValidatePassword";
 import "./style.css";
 
@@ -85,7 +85,7 @@ const Index = () => {
           />
         </div>
         <div className="input-text">
-          <PhoneNumberInput
+          <ValidatePhoneInput
             label="Enter your phone number"
             errorMessage="Please enter a valid phone number."
             requiredMessage="Phone number cannot be empty."
